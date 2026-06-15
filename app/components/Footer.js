@@ -23,6 +23,7 @@ export default function Footer() {
                 width={130}
                 height={44}
                 className="object-contain"
+                style={{ filter: "brightness(0) invert(1)" }}
               />
             </div>
             <p className="text-sm leading-relaxed max-w-[220px]" style={{ color: "#6B7280" }}>

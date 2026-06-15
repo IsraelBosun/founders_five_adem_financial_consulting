@@ -97,7 +97,7 @@ export default function AboutPage() {
           <AnimateIn variant="scaleUp" delay={150}>
             <div className="relative rounded-2xl overflow-hidden" style={{ height: "420px" }}>
               <Image
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1000&q=80"
+                src="https://images.unsplash.com/photo-1611432579402-7037e3e2c1e4?auto=format&fit=crop&w=1000&q=80"
                 alt="ADEM Financial Consulting professional"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
