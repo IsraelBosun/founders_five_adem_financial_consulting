@@ -109,6 +109,7 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 ["About", "/about"],
+                ["Team", "/team"],
                 ["Industries", "/industries"],
                 ["Contact", "/contact"],
               ].map(([label, href]) => (
@@ -163,7 +164,14 @@ export default function Footer() {
           style={{ borderColor: "#1A3A4A", color: "#374151" }}
         >
           <p>© 2026 ADEM Financial Consulting Ltd. All rights reserved.</p>
-          <p>Nigeria</p>
+          <a
+            href="http://bluehydralabs.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors duration-150 hover:text-white"
+          >
+            Built by BLUEHYDRA
+          </a>
         </div>
       </div>
     </footer>
