@@ -9,6 +9,9 @@ const requiredEnvVars = [
   "SMTP_PASS",
   "CONTACT_TO",
 ];
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 5;
+const rateLimitStore = new Map();
 
 function clean(value) {
   return String(value || "").trim();
@@ -35,7 +38,68 @@ function missingConfig() {
   return requiredEnvVars.filter((key) => !process.env[key]);
 }
 
+function getClientIp(request) {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0].trim();
+  }
+
+  return (
+    request.headers.get("x-real-ip") ||
+    request.headers.get("cf-connecting-ip") ||
+    "unknown"
+  );
+}
+
+function checkRateLimit(request) {
+  const now = Date.now();
+  const key = getClientIp(request);
+  const current = rateLimitStore.get(key);
+
+  for (const [storedKey, value] of rateLimitStore.entries()) {
+    if (now > value.resetAt) {
+      rateLimitStore.delete(storedKey);
+    }
+  }
+
+  if (!current || now > current.resetAt) {
+    rateLimitStore.set(key, {
+      count: 1,
+      resetAt: now + RATE_LIMIT_WINDOW_MS,
+    });
+    return { allowed: true, resetAt: now + RATE_LIMIT_WINDOW_MS };
+  }
+
+  if (current.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return { allowed: false, resetAt: current.resetAt };
+  }
+
+  current.count += 1;
+  rateLimitStore.set(key, current);
+  return { allowed: true, resetAt: current.resetAt };
+}
+
 export async function POST(request) {
+  const rateLimit = checkRateLimit(request);
+
+  if (!rateLimit.allowed) {
+    const retryAfter = Math.max(1, Math.ceil((rateLimit.resetAt - Date.now()) / 1000));
+
+    return Response.json(
+      { message: "Too many messages. Please wait a few minutes before trying again." },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(retryAfter),
+          "X-RateLimit-Limit": String(RATE_LIMIT_MAX_REQUESTS),
+          "X-RateLimit-Remaining": "0",
+          "X-RateLimit-Reset": String(Math.ceil(rateLimit.resetAt / 1000)),
+        },
+      }
+    );
+  }
+
   const missing = missingConfig();
 
   if (missing.length > 0) {
