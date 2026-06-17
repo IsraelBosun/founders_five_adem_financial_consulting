@@ -1,5 +1,6 @@
 import AnimateIn from "../components/AnimateIn";
 import CopyEmail from "../components/CopyEmail";
+import ContactForm from "./ContactForm";
 
 export const metadata = {
   title: "Contact",
@@ -65,21 +66,6 @@ const socials = [
     ),
   },
 ];
-
-const services = [
-  "Accounting & Bookkeeping",
-  "Tax Consulting & Compliance",
-  "Audit Services",
-  "Financial Consulting",
-  "Risk Management",
-  "Business Registration & Compliance",
-  "Training & Capacity Building",
-  "Not sure — need guidance",
-];
-
-const inputClass =
-  "w-full rounded-xl px-4 py-3 text-sm text-gray-900 border bg-white transition-all duration-150 outline-none focus:ring-2";
-const inputStyle = { borderColor: "#E5E7EB" };
 
 export default function ContactPage() {
   return (
@@ -228,98 +214,7 @@ export default function ContactPage() {
           {/* Right — form */}
           <AnimateIn variant="fadeRight">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">Send us a message</h2>
-            <form className="space-y-5">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">
-                    First name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="John"
-                    className={inputClass}
-                    style={{
-                      ...inputStyle,
-                      "--tw-ring-color": "#17A8A0",
-                    }}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">
-                    Last name
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Doe"
-                    className={inputClass}
-                    style={inputStyle}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  placeholder="you@company.com"
-                  className={inputClass}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">
-                  Business name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Your company"
-                  className={inputClass}
-                  style={inputStyle}
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">
-                  What do you need help with?
-                </label>
-                <select
-                  className={inputClass}
-                  style={{ ...inputStyle, color: "#6B7280" }}
-                >
-                  <option value="">Select a service</option>
-                  {services.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">
-                  Message
-                </label>
-                <textarea
-                  rows={5}
-                  placeholder="Tell us a bit about your business and what you're dealing with..."
-                  className={inputClass}
-                  style={{ ...inputStyle, resize: "none" }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-4 rounded-full text-white font-semibold text-sm transition-all duration-200 hover:opacity-90 hover:scale-[1.01]"
-                style={{ background: "linear-gradient(135deg, #17A8A0 0%, #0d8f88 100%)" }}
-              >
-                Send message →
-              </button>
-
-              <p className="text-gray-400 text-xs text-center">
-                For urgent matters, WhatsApp is faster. We typically reply to emails within 1 business day.
-              </p>
-            </form>
+            <ContactForm />
           </AnimateIn>
         </div>
       </section>
